@@ -1,0 +1,11 @@
+{
+  "name": "create-editorconfig",
+  "version": "1.0.0",
+  "description": "A generator for EditorConfig files.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Douglas Moura <douglas.ademoura@gmail.com>",
+  "license": "MIT"
+}
