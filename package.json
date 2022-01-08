@@ -4,8 +4,12 @@
   "description": "A generator for EditorConfig files.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "Douglas Moura <douglas.ademoura@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^8.2.0",
+    "is-valid-glob": "^1.0.0"
+  }
 }
