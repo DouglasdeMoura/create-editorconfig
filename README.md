@@ -1,11 +1,14 @@
 # Create EditorConfig
 
-A simple npm script to generate an .editorconfig file.
+A simple npm script to generate an `.editorconfig` file.
+
+You don't know EditorConfig? [Check out the official documentation!](https://editorconfig.org/)
 
 ## Usage
 
 Simply run `npx create-editorconfig` in your project directory and answer
-the prompted questions according to your preferences.
+the prompted questions according to your preferences. You must have `node` and
+`npm` installed.
 
 [![Create EditorConfig usage](usage.svg)](https://asciinema.org/a/CDUMGP3neHEMchCFUsIqgN1U4)
 
