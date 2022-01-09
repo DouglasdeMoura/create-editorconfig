@@ -2,14 +2,14 @@
   "name": "create-editorconfig",
   "version": "1.0.2",
   "description": "A generator for EditorConfig files.",
-  "bin": "index.js",
+  "bin": "src/index.js",
   "keywords": [
     "editorconfig",
     "generator",
     "editorconfig.org"
   ],
   "scripts": {
-    "start": "node index.js"
+    "start": "node src/index.js"
   },
   "author": "Douglas Moura <douglas.ademoura@gmail.com>",
   "repository": {
