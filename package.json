@@ -2,11 +2,15 @@
   "name": "create-editorconfig",
   "version": "1.0.0",
   "description": "A generator for EditorConfig files.",
-  "main": "index.js",
+  "bin": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "author": "Douglas Moura <douglas.ademoura@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DouglasdeMoura/create-editorconfig"
+  },
   "license": "MIT",
   "dependencies": {
     "inquirer": "^8.2.0",
