@@ -84,7 +84,7 @@ exports.COMMON_QUESTIONS = [
   }
 ];
 
-exports.FINAL = {
+exports.FINAL_QUESTION = {
   type: 'confirm',
   name: 'final',
   message: 'Do want add different rules for another set of files?',

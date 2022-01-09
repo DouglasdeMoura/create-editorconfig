@@ -5,10 +5,11 @@
 const inquirer = require('inquirer')
 const fs = require('fs')
 const constants = require('./constants.js');
+const formatMap = require('./formatMap.js');
 
 // ----------------------------------------
 
-const settings = constants.DEFAULTS;
+const settings = constants.DEFAULT_SETTINGS;
 const root = constants.ROOT_QUESTION;
 const commonQuestions = constants.COMMON_QUESTIONS;
 const final = constants.FINAL_QUESTION;
@@ -26,28 +27,20 @@ function ask (questions) {
     })
 }
 
-function format (settings) {
-  return settings
-    .map(({
-      root,
-      glob,
-      charset,
-      end_of_line,
-      insert_final_newline,
-      indent_style,
-      indent_size,
-      trim_trailing_whitespace
-    }) => {
-      return `${root !== undefined ? `root = ${root ? 'true' : 'false'}\n\n` : ''}` +
-        `[${glob}]` + '\n' + '\n' +
-        `charset = ${charset}` + '\n' +
-        `end_of_line = ${end_of_line}` + '\n' +
-        `insert_final_newline = ${insert_final_newline}` + '\n' +
-        `indent_style = ${indent_style}` + '\n' +
-        `indent_size = ${indent_size}` + '\n' +
-        `trim_trailing_whitespace = ${trim_trailing_whitespace}` + '\n'
-    })
-    .join('\n')
+function format (settings, formatMap) {
+  const formated = settings.map(data => {
+    const textLines = [];
+  
+    Object.keys(data).forEach(key => {
+      const line = formatMap[key](data[key]);
+  
+      textLines.push(line);
+    });
+  
+    return ('# editorconfig.org\n' + textLines.join('')).trim();
+  });
+
+  return formated.join('\n');
 }
 
 function write (file, content) {
@@ -68,7 +61,6 @@ ask([root, ...commonQuestions, final])
       return
     }
 
-    write(file, format(settings))
+    write(file, format(settings, formatMap))
   })
   .catch(console.error);
-
