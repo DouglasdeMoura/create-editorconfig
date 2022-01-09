@@ -24,7 +24,6 @@ function ask (questions) {
         return ask([...commonQuestions, final])
       }
     })
-    .catch(console.error);
 }
 
 function format (settings) {
@@ -71,3 +70,5 @@ ask([root, ...commonQuestions, final])
 
     write(file, format(settings))
   })
+  .catch(console.error);
+
