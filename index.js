@@ -20,19 +20,24 @@ const defaultOptions = {
   trimTrailingWhitespace: true
 }
 
-const settings = []
+async function ask (questions) {
+  const settings = []
 
-function ask (questions) {
-  return inquirer
-    .prompt(questions)
-    .then(answers => {
-      settings.push(answers)
+  const askQuestions = () =>
+    inquirer
+      .prompt(questions)
+      .then(answers => {
+        settings.push(answers)
 
-      if (answers.final) {
-        console.log('\n')
-        return ask([...commonQuestions, final])
-      }
-    })
+        if (answers.final) {
+          console.log('\n')
+          return ask([...commonQuestions, final])
+        }
+      })
+
+  await askQuestions()
+
+  return settings
 }
 
 function format (settings) {
@@ -180,6 +185,6 @@ const final = {
 }
 
 ask([root, ...commonQuestions, final])
-  .then(() => {
+  .then((settings) => {
     write(FILE, format(settings))
   })
