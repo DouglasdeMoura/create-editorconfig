@@ -2,6 +2,7 @@
 
 'use strict'
 
+const commandLineArgs = require('command-line-args')
 const inquirer = require('inquirer')
 const fs = require('fs')
 const constants = require('./constants.js');
@@ -9,41 +10,57 @@ const formatMap = require('./formatMap.js');
 
 // ----------------------------------------
 
-const settings = constants.DEFAULT_SETTINGS;
-const root = constants.ROOT_QUESTION;
-const commonQuestions = constants.COMMON_QUESTIONS;
-const final = constants.FINAL_QUESTION;
+const fileName = constants.FILE_NAME
+const root = constants.ROOT_QUESTION
+const commonQuestions = constants.COMMON_QUESTIONS
+const final = constants.FINAL_QUESTION
+const optionDefinitions = constants.OPTIONS_DEFINTIONS
+const defaultOptions = constants.DEFAULT_OPTIONS
 
-function ask (questions) {
-  return inquirer
-    .prompt(questions)
-    .then(answers => {
-      settings.push(answers)
+async function ask (questions) {
+  const settings = []
 
-      if (answers.final) {
-        console.log('\n')
-        return ask([...commonQuestions, final])
-      }
-    })
+  const askQuestions = (_questions) =>
+    inquirer
+      .prompt(_questions)
+      .then(_answers => {
+        const { final, ...answers } = _answers
+
+        settings.push(answers)
+
+        if (final) {
+          console.log('\n')
+          return ask([...commonQuestions, final])
+        }
+      })
+
+  await askQuestions(questions)
+
+  return settings
 }
 
 function format (settings, formatMap) {
-  const formated = settings.map(data => {
-    const textLines = [];
-  
-    Object.keys(data).forEach(key => {
-      const line = formatMap[key](data[key]);
-  
-      textLines.push(line);
-    });
-  
-    return ('# editorconfig.org\n' + textLines.join('')).trim();
-  });
+  const formatted = settings.map(data => {
+    const textLines = []
 
-  return formated.join('\n') + '\n';
+    Object.keys(data).forEach(key => {
+      const line = formatMap[key](data[key])
+
+      textLines.push(line)
+    })
+
+    return ('# editorconfig.org\n' + textLines.join('')).trim()
+  })
+
+  return formatted.join('\n') + '\n'
 }
 
 function write (file, content) {
+  if (fs.existsSync(file)) {
+    console.error(`\nERROR: ${file} already exists.`)
+    return
+  }
+
   fs.writeFileSync(file, content, {
     encoding: 'utf-8',
     flag: 'w'
@@ -52,15 +69,16 @@ function write (file, content) {
   console.log(`\n${file} created. Enjoy :)`)
 }
 
+const options = commandLineArgs(optionDefinitions)
+
+if (options.yes) {
+  write(fileName, format([defaultOptions], formatMap))
+
+  process.exit(0)
+}
+
 ask([root, ...commonQuestions, final])
-  .then(() => {
-    const file = '.editorconfig'
-
-    if (fs.existsSync(file)) {
-      console.error(`\nERROR: ${file} already exists.`)
-      return
-    }
-
-    write(file, format(settings, formatMap))
+  .then((settings) => {
+    write(fileName, format(settings, formatMap))
   })
   .catch(console.error);
