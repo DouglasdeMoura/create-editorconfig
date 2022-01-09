@@ -1,8 +1,13 @@
 {
   "name": "create-editorconfig",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A generator for EditorConfig files.",
   "bin": "index.js",
+  "keywords": [
+    "editorconfig",
+    "generator",
+    "editorconfig.org"
+  ],
   "scripts": {
     "start": "node index.js"
   },
