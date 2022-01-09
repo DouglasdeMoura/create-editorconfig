@@ -22,7 +22,7 @@ exports.OPTIONS_DEFINTIONS = [
   }
 ]
 
-exports.FILE_NAME = '.editorconfig2'
+exports.FILE_NAME = '.editorconfig'
 
 exports.ROOT_QUESTION = {
   type: 'confirm',
