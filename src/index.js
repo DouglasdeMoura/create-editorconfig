@@ -11,9 +11,9 @@ const formatMap = require('./formatMap.js');
 // ----------------------------------------
 
 const fileName = constants.FILE_NAME
-const root = constants.ROOT_QUESTION
+const rootQuestion = constants.ROOT_QUESTION
 const commonQuestions = constants.COMMON_QUESTIONS
-const final = constants.FINAL_QUESTION
+const finalQuestion = constants.FINAL_QUESTION
 const optionDefinitions = constants.OPTIONS_DEFINTIONS
 const defaultOptions = constants.DEFAULT_OPTIONS
 
@@ -30,7 +30,7 @@ async function ask (questions) {
 
         if (final) {
           console.log('\n')
-          return ask([...commonQuestions, final])
+          return askQuestions([...commonQuestions, finalQuestion])
         }
       })
 
@@ -49,10 +49,10 @@ function format (settings, formatMap) {
       textLines.push(line)
     })
 
-    return ('# editorconfig.org\n' + textLines.join('')).trim()
+    return textLines.join('')
   })
 
-  return formatted.join('\n') + '\n'
+  return '# editorconfig.org\n' + formatted.join('')
 }
 
 function write (file, content) {
@@ -77,8 +77,8 @@ if (options.yes) {
   process.exit(0)
 }
 
-ask([root, ...commonQuestions, final])
+ask([rootQuestion, ...commonQuestions, finalQuestion])
   .then((settings) => {
     write(fileName, format(settings, formatMap))
   })
-  .catch(console.error);
+  .catch(console.error)

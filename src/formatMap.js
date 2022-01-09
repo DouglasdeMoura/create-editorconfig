@@ -1,6 +1,6 @@
 module.exports = {
-  root: content => `${content !== undefined ? `root = ${content ? 'true' : 'false'}\n\n` : ''}`,
-  glob: content => `[${content}]\n`,
+  root: content => `${content !== undefined ? `root = ${content ? 'true' : 'false'}\n` : ''}`,
+  glob: content => '\n'+ `[${content}]\n`,
   charset: content => `charset = ${content}\n`,
   endOfLine: content => `end_of_line = ${content}\n`,
   insertFinalNewline: content => `insert_final_newline = ${content}\n`,
