@@ -1,13 +1,35 @@
 const isValidGlob = require('is-valid-glob')
 
-exports.DEFAULT_SETTINGS = [];
+const defaultOptions = {
+  root: true,
+  glob: '*',
+  charset: 'utf-8',
+  endOfLine: 'lf',
+  insertFinalNewline: true,
+  indentStyle: 'space',
+  indentSize: 2,
+  trimTrailingWhitespace: true
+}
+
+exports.DEFAULT_OPTIONS = defaultOptions
+
+exports.OPTIONS_DEFINTIONS = [
+  {
+    name: 'yes',
+    alias: 'y',
+    type: Boolean,
+    defaultValue: false,
+  }
+]
+
+exports.FILE_NAME = '.editorconfig2'
 
 exports.ROOT_QUESTION = {
   type: 'confirm',
   name: 'root',
   message: 'Is this is the root directory?',
-  default: true
-};
+  default: defaultOptions.root
+}
 
 exports.COMMON_QUESTIONS = [
   {
@@ -38,7 +60,7 @@ exports.COMMON_QUESTIONS = [
   },
   {
     type: 'list',
-    name: 'end_of_line',
+    name: 'endOfLine',
     message: 'End of line:',
     default: defaultOptions.endOfLine,
     choices: [
@@ -82,11 +104,11 @@ exports.COMMON_QUESTIONS = [
     message: 'Trim trailing whitespace:',
     default: defaultOptions.trimTrailingWhitespace
   }
-];
+]
 
 exports.FINAL_QUESTION = {
   type: 'confirm',
   name: 'final',
   message: 'Do want add different rules for another set of files?',
   default: false
-};
+}
