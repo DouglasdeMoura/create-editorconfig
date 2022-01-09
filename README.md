@@ -10,6 +10,9 @@ Simply run `npx create-editorconfig` in your project directory and answer
 the prompted questions according to your preferences. You must have `node` and
 `npm` installed.
 
+Use `npx create-editor -y` to skip the prompts and generate a [default `.editorconfig`
+file](.editorconfig).
+
 [![Create EditorConfig usage](usage.svg)](https://asciinema.org/a/CDUMGP3neHEMchCFUsIqgN1U4)
 
 ## License
