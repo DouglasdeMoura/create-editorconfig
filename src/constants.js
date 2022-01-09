@@ -14,7 +14,7 @@ exports.COMMON_QUESTIONS = [
     type: 'input',
     name: 'glob',
     message: 'Files to apply those rules:',
-    default: '*',
+    default: defaultOptions.glob,
     validate (value) {
       if (isValidGlob(value)) {
         return true
@@ -27,7 +27,7 @@ exports.COMMON_QUESTIONS = [
     type: 'list',
     name: 'charset',
     message: 'Charset:',
-    default: 'utf-8',
+    default: defaultOptions.charset,
     choices: [
       'latin1',
       'utf-8',
@@ -40,7 +40,7 @@ exports.COMMON_QUESTIONS = [
     type: 'list',
     name: 'end_of_line',
     message: 'End of line:',
-    default: 'lf',
+    default: defaultOptions.endOfLine,
     choices: [
       'cr',
       'crlf',
@@ -49,15 +49,15 @@ exports.COMMON_QUESTIONS = [
   },
   {
     type: 'confirm',
-    name: 'insert_final_newline',
+    name: 'insertFinalNewline',
     message: 'Insert final newline:',
-    default: true
+    default: defaultOptions.insertFinalNewline
   },
   {
     type: 'list',
-    name: 'indent_style',
+    name: 'indentStyle',
     message: 'Indent style:',
-    default: 'space',
+    default: defaultOptions.indentStyle,
     choices: [
       'space',
       'tab'
@@ -65,9 +65,9 @@ exports.COMMON_QUESTIONS = [
   },
   {
     type: 'input',
-    name: 'indent_size',
+    name: 'indentSize',
     message: 'Indent size:',
-    default: 2,
+    default: defaultOptions.indentSize,
     validate (value) {
       if (Number.isInteger(Number(value))) {
         return true
@@ -78,9 +78,9 @@ exports.COMMON_QUESTIONS = [
   },
   {
     type: 'confirm',
-    name: 'trim_trailing_whitespace',
+    name: 'trimTrailingWhitespace',
     message: 'Trim trailing whitespace:',
-    default: true
+    default: defaultOptions.trimTrailingWhitespace
   }
 ];
 
