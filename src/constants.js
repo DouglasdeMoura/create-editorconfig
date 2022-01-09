@@ -109,6 +109,6 @@ exports.COMMON_QUESTIONS = [
 exports.FINAL_QUESTION = {
   type: 'confirm',
   name: 'final',
-  message: 'Do want add different rules for another set of files?',
+  message: 'Do you want add different rules for another set of files?',
   default: false
 }
