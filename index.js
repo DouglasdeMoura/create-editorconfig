@@ -2,9 +2,12 @@
 
 'use strict'
 
+const commandLineArgs = require('command-line-args')
 const inquirer = require('inquirer')
 const isValidGlob = require('is-valid-glob')
 const fs = require('fs')
+
+const FILE = '.editorconfig'
 
 const defaultOptions = {
   root: true,
@@ -15,6 +18,76 @@ const defaultOptions = {
   indentStyle: 'space',
   indentSize: 2,
   trimTrailingWhitespace: true
+}
+
+const settings = []
+
+function ask (questions) {
+  return inquirer
+    .prompt(questions)
+    .then(answers => {
+      settings.push(answers)
+
+      if (answers.final) {
+        console.log('\n')
+        return ask([...commonQuestions, final])
+      }
+    })
+}
+
+function format (settings) {
+  return settings
+    .map(({
+      root,
+      glob,
+      charset,
+      endOfLine,
+      insertFinalNewline,
+      indentStyle,
+      indentSize,
+      trimTrailingWhitespace
+    }) => {
+      return `${root !== undefined ? `root = ${root ? 'true' : 'false'}\n\n` : ''}` +
+        `[${glob}]` + '\n' + '\n' +
+        `charset = ${charset}` + '\n' +
+        `end_of_line = ${endOfLine}` + '\n' +
+        `insert_final_newline = ${insertFinalNewline}` + '\n' +
+        `indent_style = ${indentStyle}` + '\n' +
+        `indent_size = ${indentSize}` + '\n' +
+        `trim_trailing_whitespace = ${trimTrailingWhitespace}` + '\n'
+    })
+    .join('\n')
+}
+
+function write (file, content) {
+  if (fs.existsSync(file)) {
+    console.error(`\nERROR: ${file} already exists.`)
+    return
+  }
+
+  fs.writeFileSync(file, content, {
+    encoding: 'utf-8',
+    flag: 'w'
+  })
+
+  console.log(`\n${file} created. Enjoy :)`)
+}
+
+const optionDefinitions = [
+  {
+    name: 'yes',
+    alias: 'y',
+    type: Boolean,
+    defaultValue: false,
+  }
+]
+
+const options = commandLineArgs(optionDefinitions)
+
+if (options.yes) {
+  write(FILE, format([defaultOptions]))
+
+  process.exit(0)
 }
 
 const root = {
@@ -106,62 +179,7 @@ const final = {
   default: false
 }
 
-const settings = []
-
-function ask (questions) {
-  return inquirer
-    .prompt(questions)
-    .then(answers => {
-      settings.push(answers)
-
-      if (answers.final) {
-        console.log('\n')
-        return ask([...commonQuestions, final])
-      }
-    })
-}
-
-function format (settings) {
-  return settings
-    .map(({
-      root,
-      glob,
-      charset,
-      endOfLine,
-      insertFinalNewline,
-      indentStyle,
-      indentSize,
-      trimTrailingWhitespace
-    }) => {
-      return `${root !== undefined ? `root = ${root ? 'true' : 'false'}\n\n` : ''}` +
-        `[${glob}]` + '\n' + '\n' +
-        `charset = ${charset}` + '\n' +
-        `end_of_line = ${endOfLine}` + '\n' +
-        `insert_final_newline = ${insertFinalNewline}` + '\n' +
-        `indent_style = ${indentStyle}` + '\n' +
-        `indent_size = ${indentSize}` + '\n' +
-        `trim_trailing_whitespace = ${trimTrailingWhitespace}` + '\n'
-    })
-    .join('\n')
-}
-
-function write (file, content) {
-  fs.writeFileSync(file, content, {
-    encoding: 'utf-8',
-    flag: 'w'
-  })
-
-  console.log(`\n${file} created. Enjoy :)`)
-}
-
 ask([root, ...commonQuestions, final])
   .then(() => {
-    const file = '.editorconfig'
-
-    if (fs.existsSync(file)) {
-      console.error(`\nERROR: ${file} already exists.`)
-      return
-    }
-
-    write(file, format(settings))
+    write(FILE, format(settings))
   })
