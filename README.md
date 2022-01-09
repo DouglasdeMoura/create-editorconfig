@@ -7,6 +7,8 @@ A simple npm script to generate an .editorconfig file.
 Simply run `npx create-editorconfig` in your project directory and answer
 the prompted questions according to your preferences.
 
+![Create EditorConfig usage](usage.svg)
+
 ## License
 
 Create EditorConfig is open source software [licensed as MIT](https://github.com/facebook/create-react-app/blob/main/LICENSE).
