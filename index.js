@@ -6,11 +6,22 @@ const inquirer = require('inquirer')
 const isValidGlob = require('is-valid-glob')
 const fs = require('fs')
 
+const defaultOptions = {
+  root: true,
+  glob: '*',
+  charset: 'utf-8',
+  endOfLine: 'lf',
+  insertFinalNewline: true,
+  indentStyle: 'space',
+  indentSize: 2,
+  trimTrailingWhitespace: true
+}
+
 const root = {
   type: 'confirm',
   name: 'root',
   message: 'Is this is the root directory?',
-  default: true
+  default: defaultOptions.root
 }
 
 const commonQuestions = [
@@ -18,7 +29,7 @@ const commonQuestions = [
     type: 'input',
     name: 'glob',
     message: 'Files to apply those rules:',
-    default: '*',
+    default: defaultOptions.glob,
     validate (value) {
       if (isValidGlob(value)) {
         return true
@@ -31,7 +42,7 @@ const commonQuestions = [
     type: 'list',
     name: 'charset',
     message: 'Charset:',
-    default: 'utf-8',
+    default: defaultOptions.charset,
     choices: [
       'latin1',
       'utf-8',
@@ -44,7 +55,7 @@ const commonQuestions = [
     type: 'list',
     name: 'end_of_line',
     message: 'End of line:',
-    default: 'lf',
+    default: defaultOptions.endOfLine,
     choices: [
       'cr',
       'crlf',
@@ -53,15 +64,15 @@ const commonQuestions = [
   },
   {
     type: 'confirm',
-    name: 'insert_final_newline',
+    name: 'insertFinalNewline',
     message: 'Insert final newline:',
-    default: true
+    default: defaultOptions.insertFinalNewline
   },
   {
     type: 'list',
-    name: 'indent_style',
+    name: 'indentStyle',
     message: 'Indent style:',
-    default: 'space',
+    default: defaultOptions.indentStyle,
     choices: [
       'space',
       'tab'
@@ -69,9 +80,9 @@ const commonQuestions = [
   },
   {
     type: 'input',
-    name: 'indent_size',
+    name: 'indentSize',
     message: 'Indent size:',
-    default: 2,
+    default: defaultOptions.indentSize,
     validate (value) {
       if (Number.isInteger(Number(value))) {
         return true
@@ -82,9 +93,9 @@ const commonQuestions = [
   },
   {
     type: 'confirm',
-    name: 'trim_trailing_whitespace',
+    name: 'trimTrailingWhitespace',
     message: 'Trim trailing whitespace:',
-    default: true
+    default: defaultOptions.trimTrailingWhitespace
   }
 ]
 
@@ -116,20 +127,20 @@ function format (settings) {
       root,
       glob,
       charset,
-      end_of_line,
-      insert_final_newline,
-      indent_style,
-      indent_size,
-      trim_trailing_whitespace
+      endOfLine,
+      insertFinalNewline,
+      indentStyle,
+      indentSize,
+      trimTrailingWhitespace
     }) => {
       return `${root !== undefined ? `root = ${root ? 'true' : 'false'}\n\n` : ''}` +
         `[${glob}]` + '\n' + '\n' +
         `charset = ${charset}` + '\n' +
-        `end_of_line = ${end_of_line}` + '\n' +
-        `insert_final_newline = ${insert_final_newline}` + '\n' +
-        `indent_style = ${indent_style}` + '\n' +
-        `indent_size = ${indent_size}` + '\n' +
-        `trim_trailing_whitespace = ${trim_trailing_whitespace}` + '\n'
+        `end_of_line = ${endOfLine}` + '\n' +
+        `insert_final_newline = ${insertFinalNewline}` + '\n' +
+        `indent_style = ${indentStyle}` + '\n' +
+        `indent_size = ${indentSize}` + '\n' +
+        `trim_trailing_whitespace = ${trimTrailingWhitespace}` + '\n'
     })
     .join('\n')
 }
