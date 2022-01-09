@@ -40,7 +40,7 @@ function format (settings, formatMap) {
     return ('# editorconfig.org\n' + textLines.join('')).trim();
   });
 
-  return formated.join('\n');
+  return formated.join('\n') + '\n';
 }
 
 function write (file, content) {
