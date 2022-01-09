@@ -24,6 +24,7 @@ function ask (questions) {
         return ask([...commonQuestions, final])
       }
     })
+    .catch(console.error);
 }
 
 function format (settings) {
