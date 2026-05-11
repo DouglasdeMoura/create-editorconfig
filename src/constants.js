@@ -1,4 +1,4 @@
-import isValidGlob from 'is-valid-glob'
+import { isValidGlob } from './isValidGlob.js'
 
 export const DEFAULT_OPTIONS = {
   root: true,
