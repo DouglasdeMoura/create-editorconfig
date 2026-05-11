@@ -2,7 +2,13 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { parseArgs } from "../src/parseArgs.js";
 
-const BASE = { yes: false, force: false, stdout: false, targetDir: undefined };
+const BASE = {
+  yes: false,
+  force: false,
+  stdout: false,
+  detect: false,
+  targetDir: undefined,
+};
 
 test("no args → all flags default to false, no target", () => {
   assert.deepEqual(parseArgs([]), BASE);

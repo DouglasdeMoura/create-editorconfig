@@ -94,6 +94,20 @@ test("CLI -y --stdout writes to stdout and does not touch disk", () => {
   }
 });
 
+test("CLI --detect picks a preset from the target directory", () => {
+  const dir = mkdtempSync(path.join(tmpdir(), "cec-cli-"));
+  try {
+    writeFileSync(path.join(dir, "go.mod"), "module x\n");
+    const result = runIn(dir, ["--detect"]);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stderr, /Detected preset: go/);
+    const written = readFileSync(path.join(dir, ".editorconfig"), "utf-8");
+    assert.match(written, /\[\*\.go\]\n/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("CLI --preset web writes a multi-section preset", () => {
   const dir = mkdtempSync(path.join(tmpdir(), "cec-cli-"));
   try {

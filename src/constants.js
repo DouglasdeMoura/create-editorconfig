@@ -34,6 +34,10 @@ export const OPTIONS_DEFINTIONS = {
     type: "string",
     short: "p",
   },
+  detect: {
+    type: "boolean",
+    default: false,
+  },
 };
 
 export const FILE_NAME = ".editorconfig";

@@ -15,6 +15,7 @@ import formatMap from "./formatMap.js";
 import { format } from "./format.js";
 import { parseArgs } from "./parseArgs.js";
 import { PRESETS, PRESET_NAMES } from "./presets.js";
+import { detectPreset } from "./sniff.js";
 
 async function ask(questions) {
   const settings = [];
@@ -60,6 +61,12 @@ function resolveTarget(options) {
 
 const options = parseArgs();
 const target = resolveTarget(options);
+
+if (options.detect && options.preset === undefined) {
+  const detected = detectPreset(options.targetDir ?? ".");
+  console.error(`Detected preset: ${detected}`);
+  options.preset = detected;
+}
 
 if (options.preset !== undefined) {
   const preset = PRESETS[options.preset];
