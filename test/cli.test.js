@@ -94,6 +94,31 @@ test("CLI -y --stdout writes to stdout and does not touch disk", () => {
   }
 });
 
+test("CLI --preset web writes a multi-section preset", () => {
+  const dir = mkdtempSync(path.join(tmpdir(), "cec-cli-"));
+  try {
+    const result = runIn(dir, ["--preset", "web"]);
+    assert.equal(result.status, 0, result.stderr);
+    const written = readFileSync(path.join(dir, ".editorconfig"), "utf-8");
+    assert.match(written, /\[\*\]\n/);
+    assert.match(written, /\[\*\.md\]\n/);
+    assert.match(written, /trim_trailing_whitespace = false/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("CLI --preset unknown errors out", () => {
+  const dir = mkdtempSync(path.join(tmpdir(), "cec-cli-"));
+  try {
+    const result = runIn(dir, ["--preset", "nope"]);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /unknown preset/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("CLI -y --output writes to the given path", () => {
   const dir = mkdtempSync(path.join(tmpdir(), "cec-cli-"));
   try {

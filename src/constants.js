@@ -30,6 +30,10 @@ export const OPTIONS_DEFINTIONS = {
     type: "string",
     short: "o",
   },
+  preset: {
+    type: "string",
+    short: "p",
+  },
 };
 
 export const FILE_NAME = ".editorconfig";

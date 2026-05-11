@@ -14,6 +14,7 @@ import {
 import formatMap from "./formatMap.js";
 import { format } from "./format.js";
 import { parseArgs } from "./parseArgs.js";
+import { PRESETS, PRESET_NAMES } from "./presets.js";
 
 async function ask(questions) {
   const settings = [];
@@ -59,6 +60,18 @@ function resolveTarget(options) {
 
 const options = parseArgs();
 const target = resolveTarget(options);
+
+if (options.preset !== undefined) {
+  const preset = PRESETS[options.preset];
+  if (!preset) {
+    console.error(
+      `\nERROR: unknown preset \`${options.preset}\`. Available: ${PRESET_NAMES.join(", ")}.`,
+    );
+    process.exit(1);
+  }
+  emit(format(preset, formatMap), { file: target, force: options.force });
+  process.exit(process.exitCode ?? 0);
+}
 
 if (options.yes) {
   emit(format([DEFAULT_OPTIONS], formatMap), { file: target, force: options.force });

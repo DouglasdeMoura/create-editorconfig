@@ -19,6 +19,7 @@ than the current directory: `npx create-editorconfig -y ./packages/foo`.
 ### Flags
 
 - `-y, --yes` — generate the default `.editorconfig` without prompting.
+- `-p, --preset <name>` — generate from a named preset (`default`, `web`, `python`, `go`).
 - `-f, --force` — overwrite an existing file instead of erroring out.
 - `-o, --output <path>` — write to a specific path instead of `<dir>/.editorconfig`.
 - `--stdout` — print the result to stdout instead of writing to disk.
