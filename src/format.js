@@ -9,6 +9,7 @@ export function format(settings, map = defaultFormatMap) {
     for (const key of Object.keys(data)) {
       const formatter = map[key];
       if (typeof formatter !== "function") continue;
+      if (data[key] === undefined || data[key] === "") continue;
 
       const line = formatter(data[key]);
       if (line === "") continue;

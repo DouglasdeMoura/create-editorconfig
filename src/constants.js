@@ -95,6 +95,23 @@ export const COMMON_QUESTIONS = [
     },
   },
   {
+    type: "input",
+    name: "tabWidth",
+    message: "Tab width (positive integer, leave blank to default to indent size):",
+    default: "",
+    validate(value) {
+      if (value === "" || value === undefined) return true;
+      const n = Number(value);
+      if (Number.isInteger(n) && n > 0) return true;
+      return "Please enter a positive integer, or leave blank.";
+    },
+    filter(value) {
+      if (value === "" || value === undefined) return undefined;
+      const n = Number(value);
+      return Number.isInteger(n) ? n : value;
+    },
+  },
+  {
     type: "confirm",
     name: "trimTrailingWhitespace",
     message: "Trim trailing whitespace:",

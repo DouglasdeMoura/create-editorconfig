@@ -38,6 +38,11 @@ test("indentStyle", () => {
 
 test("indentSize", () => {
   assert.equal(formatMap.indentSize(2), "indent_size = 2\n");
+  assert.equal(formatMap.indentSize("tab"), "indent_size = tab\n");
+});
+
+test("tabWidth", () => {
+  assert.equal(formatMap.tabWidth(4), "tab_width = 4\n");
 });
 
 test("trimTrailingWhitespace", () => {

@@ -28,6 +28,11 @@ test("format() omits leading blank line when there's no preamble", () => {
   assert.equal(out, "# editorconfig.org\n[*]\ncharset = utf-8\n");
 });
 
+test("format() skips keys whose value is undefined or empty string", () => {
+  const out = format([{ glob: "*", charset: "utf-8", tabWidth: undefined, indentSize: "" }]);
+  assert.equal(out, "# editorconfig.org\n[*]\ncharset = utf-8\n");
+});
+
 test("format() skips keys without a formatter", () => {
   const out = format([{ glob: "*", charset: "utf-8", unknownKey: "x" }]);
   assert.equal(out, "# editorconfig.org\n[*]\ncharset = utf-8\n");
