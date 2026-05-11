@@ -31,31 +31,31 @@ npx create-editorconfig --preset python
 npx create-editorconfig -y ./packages/foo
 
 # append a new section to an existing file
-npx create-editorconfig --merge --preset web
+npx create-editorconfig --merge --preset js
 ```
 
 ## Presets
 
 `--preset <name>` skips the prompts and emits a ready-made multi-section config:
 
-| Preset    | What you get                                                                |
-| --------- | --------------------------------------------------------------------------- |
-| `default` | Same as `-y`. Single `[*]` section with safe defaults.                      |
-| `web`     | Default + `[*.md]` keeping trailing whitespace (markdown hard line breaks). |
-| `python`  | 4-space indent + `[Makefile]` tab override.                                 |
-| `go`      | `[*.go]` and `[Makefile]` set to tabs, default elsewhere.                   |
+| Preset    | What you get                                                                                                |
+| --------- | ----------------------------------------------------------------------------------------------------------- |
+| `default` | Same as `-y`. Single `[*]` section with safe defaults.                                                      |
+| `js`      | Defaults + explicit JS/TS/JSON/YAML sections, `[*.md]` keeping trailing whitespace, `[Makefile]` with tabs. |
+| `python`  | 4-space indent + `[Makefile]` tab override.                                                                 |
+| `go`      | `[*.go]` and `[Makefile]` set to tabs, default elsewhere.                                                   |
 
 `--detect` picks one of these automatically by sniffing the target directory:
 `go.mod` or `*.go` → `go`, `pyproject.toml` / `requirements.txt` / `*.py` →
-`python`, `package.json` / `tsconfig.json` / `*.ts`/`*.tsx` → `web`, otherwise
-`default`.
+`python`, `package.json` / `tsconfig.json` / `*.ts`/`*.tsx`/`*.js` → `js`,
+otherwise `default`.
 
 ## Flags
 
 | Flag                  | Description                                                                  |
 | --------------------- | ---------------------------------------------------------------------------- |
 | `-y, --yes`           | Generate the default config without prompting.                               |
-| `-p, --preset <name>` | Generate from a named preset (`default`, `web`, `python`, `go`).             |
+| `-p, --preset <name>` | Generate from a named preset (`default`, `js`, `python`, `go`).              |
 | `--detect`            | Pick a preset by sniffing the target directory.                              |
 | `-f, --force`         | Overwrite an existing file.                                                  |
 | `-m, --merge`         | Append new sections to an existing `.editorconfig` instead of erroring out.  |

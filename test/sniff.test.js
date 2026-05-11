@@ -45,14 +45,21 @@ test("pyproject.toml → python", () => {
   });
 });
 
-test("package.json → web", () => {
+test("package.json → js", () => {
   withTempDir((dir) => {
     writeFileSync(path.join(dir, "package.json"), "{}");
-    assert.equal(detectPreset(dir), "web");
+    assert.equal(detectPreset(dir), "js");
   });
 });
 
-test("go markers take precedence over web markers", () => {
+test("a .ts file → js", () => {
+  withTempDir((dir) => {
+    writeFileSync(path.join(dir, "index.ts"), "");
+    assert.equal(detectPreset(dir), "js");
+  });
+});
+
+test("go markers take precedence over js markers", () => {
   withTempDir((dir) => {
     writeFileSync(path.join(dir, "go.mod"), "module x\n");
     writeFileSync(path.join(dir, "package.json"), "{}");

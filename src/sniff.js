@@ -13,9 +13,9 @@ const SIGNATURES = [
     extensions: [".py"],
   },
   {
-    name: "web",
-    markers: ["package.json", "tsconfig.json", "deno.json"],
-    extensions: [".ts", ".tsx", ".jsx", ".html", ".css", ".scss"],
+    name: "js",
+    markers: ["package.json", "tsconfig.json", "deno.json", "bun.lockb"],
+    extensions: [".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".mts", ".cts"],
   },
 ];
 

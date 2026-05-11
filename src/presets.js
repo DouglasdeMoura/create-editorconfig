@@ -7,22 +7,35 @@ const markdownPreservesTrailingSpaces = {
   trimTrailingWhitespace: false,
 };
 
+const makefileUsesTabs = {
+  glob: "Makefile",
+  indentStyle: "tab",
+  indentSize: "unset",
+};
+
 export const PRESETS = {
   default: [base()],
 
-  web: [
+  js: [
     base(),
+    {
+      glob: "*.{js,jsx,ts,tsx,mjs,cjs,cts,mts,json,jsonc}",
+      indentStyle: "space",
+      indentSize: 2,
+    },
+    {
+      glob: "*.{yml,yaml}",
+      indentStyle: "space",
+      indentSize: 2,
+    },
     markdownPreservesTrailingSpaces,
+    makefileUsesTabs,
   ],
 
   python: [
     base({ indentSize: 4 }),
     markdownPreservesTrailingSpaces,
-    {
-      glob: "Makefile",
-      indentStyle: "tab",
-      indentSize: "unset",
-    },
+    makefileUsesTabs,
   ],
 
   go: [
@@ -33,11 +46,7 @@ export const PRESETS = {
       indentStyle: "tab",
       indentSize: "unset",
     },
-    {
-      glob: "Makefile",
-      indentStyle: "tab",
-      indentSize: "unset",
-    },
+    makefileUsesTabs,
   ],
 };
 

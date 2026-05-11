@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.2.0
+
+### Breaking changes
+
+- The `web` preset is renamed to `js` and gains explicit
+  `[*.{js,jsx,ts,tsx,mjs,cjs,cts,mts,json,jsonc}]`, `[*.{yml,yaml}]`, and
+  `[Makefile]` sections. `--detect` now reports `js` for Node/TypeScript
+  projects (`package.json`, `tsconfig.json`, `deno.json`, `bun.lockb`,
+  `*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}`).
+
 ## 2.1.0
 
 ### New CLI flags

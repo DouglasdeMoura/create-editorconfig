@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 import { PRESETS, PRESET_NAMES, getPreset } from "../src/presets.js";
 import { format } from "../src/format.js";
 
-test("ships at least default, web, python, go presets", () => {
-  for (const name of ["default", "web", "python", "go"]) {
+test("ships at least default, js, python, go presets", () => {
+  for (const name of ["default", "js", "python", "go"]) {
     assert.ok(PRESET_NAMES.includes(name), `missing preset: ${name}`);
     assert.ok(Array.isArray(getPreset(name)));
   }
@@ -17,9 +17,15 @@ test("default preset matches the bare `-y` output", () => {
   assert.match(out, /charset = utf-8\n/);
 });
 
-test("web preset adds an [*.md] override that preserves trailing whitespace", () => {
-  const out = format(PRESETS.web);
+test("js preset preserves trailing whitespace in markdown and uses tabs for Makefile", () => {
+  const out = format(PRESETS.js);
   assert.match(out, /\[\*\.md\]\n[^[]*trim_trailing_whitespace = false/);
+  assert.match(out, /\[Makefile\]\n[^[]*indent_style = tab/);
+});
+
+test("js preset has an explicit JS/TS section", () => {
+  const out = format(PRESETS.js);
+  assert.match(out, /\[\*\.\{js,jsx,ts,tsx,mjs,cjs,cts,mts,json,jsonc\}\]/);
 });
 
 test("python preset uses 4-space indent and a tab Makefile", () => {

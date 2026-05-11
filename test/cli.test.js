@@ -115,7 +115,7 @@ test("CLI --merge appends a preset's sections to an existing file", () => {
     const before = "# editorconfig.org\nroot = true\n\n[*]\nindent_size = 4\n";
     writeFileSync(target, before);
 
-    const result = runIn(dir, ["--merge", "--preset", "web"]);
+    const result = runIn(dir, ["--merge", "--preset", "js"]);
     assert.equal(result.status, 0, result.stderr);
 
     const after = readFileSync(target, "utf-8");
@@ -140,15 +140,16 @@ test("CLI --merge creates the file when it does not yet exist", () => {
   }
 });
 
-test("CLI --preset web writes a multi-section preset", () => {
+test("CLI --preset js writes a multi-section preset", () => {
   const dir = mkdtempSync(path.join(tmpdir(), "cec-cli-"));
   try {
-    const result = runIn(dir, ["--preset", "web"]);
+    const result = runIn(dir, ["--preset", "js"]);
     assert.equal(result.status, 0, result.stderr);
     const written = readFileSync(path.join(dir, ".editorconfig"), "utf-8");
     assert.match(written, /\[\*\]\n/);
     assert.match(written, /\[\*\.md\]\n/);
     assert.match(written, /trim_trailing_whitespace = false/);
+    assert.match(written, /\[Makefile\]\n[^[]*indent_style = tab/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
