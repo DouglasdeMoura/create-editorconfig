@@ -20,6 +20,9 @@
     "test": "node --test",
     "fmt": "oxfmt"
   },
+  "dependencies": {
+    "inquirer": "^8.2.0"
+  },
   "devDependencies": {
     "oxfmt": "^0.48.0"
   },
