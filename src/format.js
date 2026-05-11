@@ -5,9 +5,10 @@ export function format(settings, map = defaultFormatMap) {
     const textLines = [];
 
     Object.keys(data).forEach((key) => {
-      const line = map[key](data[key]);
+      const formatter = map[key];
+      if (typeof formatter !== "function") return;
 
-      textLines.push(line);
+      textLines.push(formatter(data[key]));
     });
 
     return textLines.join("");

@@ -23,6 +23,11 @@ test("format([]) returns only the header", () => {
   assert.equal(format([]), "# editorconfig.org\n");
 });
 
+test("format() skips keys without a formatter", () => {
+  const out = format([{ glob: "*", charset: "utf-8", unknownKey: "x" }]);
+  assert.equal(out, "# editorconfig.org\n\n[*]\ncharset = utf-8\n");
+});
+
 test("format() concatenates multiple sections", () => {
   const out = format([
     { root: true, glob: "*", charset: "utf-8" },
