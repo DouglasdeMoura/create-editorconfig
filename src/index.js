@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import commandLineArgs from 'command-line-args'
 import inquirer from 'inquirer'
 import fs from 'node:fs'
 import {
@@ -8,11 +7,11 @@ import {
   ROOT_QUESTION,
   COMMON_QUESTIONS,
   FINAL_QUESTION,
-  OPTIONS_DEFINTIONS,
   DEFAULT_OPTIONS,
 } from './constants.js'
 import formatMap from './formatMap.js'
 import { format } from './format.js'
+import { parseArgs } from './parseArgs.js'
 
 async function ask (questions) {
   const settings = []
@@ -50,7 +49,7 @@ function write (file, content) {
   console.log(`\n${file} created. Enjoy :)`)
 }
 
-const options = commandLineArgs(OPTIONS_DEFINTIONS)
+const options = parseArgs()
 
 if (options.yes) {
   write(FILE_NAME, format([DEFAULT_OPTIONS], formatMap))

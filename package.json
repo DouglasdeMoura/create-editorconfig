@@ -4,6 +4,9 @@
   "description": "A generator for EditorConfig files.",
   "type": "module",
   "bin": "src/index.js",
+  "engines": {
+    "node": ">=18.3.0"
+  },
   "keywords": [
     "editorconfig",
     "generator",
@@ -19,7 +22,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "command-line-args": "^5.2.0",
     "inquirer": "^8.2.0",
     "is-valid-glob": "^1.0.0"
   }

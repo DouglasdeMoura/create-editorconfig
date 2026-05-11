@@ -11,14 +11,13 @@ export const DEFAULT_OPTIONS = {
   trimTrailingWhitespace: true
 }
 
-export const OPTIONS_DEFINTIONS = [
-  {
-    name: 'yes',
-    alias: 'y',
-    type: Boolean,
-    defaultValue: false,
+export const OPTIONS_DEFINTIONS = {
+  yes: {
+    type: 'boolean',
+    short: 'y',
+    default: false,
   }
-]
+}
 
 export const FILE_NAME = '.editorconfig'
 
