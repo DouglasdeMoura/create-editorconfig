@@ -1,6 +1,6 @@
-const isValidGlob = require('is-valid-glob')
+import isValidGlob from 'is-valid-glob'
 
-const defaultOptions = {
+export const DEFAULT_OPTIONS = {
   root: true,
   glob: '*',
   charset: 'utf-8',
@@ -11,9 +11,7 @@ const defaultOptions = {
   trimTrailingWhitespace: true
 }
 
-exports.DEFAULT_OPTIONS = defaultOptions
-
-exports.OPTIONS_DEFINTIONS = [
+export const OPTIONS_DEFINTIONS = [
   {
     name: 'yes',
     alias: 'y',
@@ -22,21 +20,21 @@ exports.OPTIONS_DEFINTIONS = [
   }
 ]
 
-exports.FILE_NAME = '.editorconfig'
+export const FILE_NAME = '.editorconfig'
 
-exports.ROOT_QUESTION = {
+export const ROOT_QUESTION = {
   type: 'confirm',
   name: 'root',
   message: 'Is this is the root directory?',
-  default: defaultOptions.root
+  default: DEFAULT_OPTIONS.root
 }
 
-exports.COMMON_QUESTIONS = [
+export const COMMON_QUESTIONS = [
   {
     type: 'input',
     name: 'glob',
     message: 'Files to apply those rules:',
-    default: defaultOptions.glob,
+    default: DEFAULT_OPTIONS.glob,
     validate (value) {
       if (isValidGlob(value)) {
         return true
@@ -49,7 +47,7 @@ exports.COMMON_QUESTIONS = [
     type: 'list',
     name: 'charset',
     message: 'Charset:',
-    default: defaultOptions.charset,
+    default: DEFAULT_OPTIONS.charset,
     choices: [
       'latin1',
       'utf-8',
@@ -62,7 +60,7 @@ exports.COMMON_QUESTIONS = [
     type: 'list',
     name: 'endOfLine',
     message: 'End of line:',
-    default: defaultOptions.endOfLine,
+    default: DEFAULT_OPTIONS.endOfLine,
     choices: [
       'cr',
       'crlf',
@@ -73,13 +71,13 @@ exports.COMMON_QUESTIONS = [
     type: 'confirm',
     name: 'insertFinalNewline',
     message: 'Insert final newline:',
-    default: defaultOptions.insertFinalNewline
+    default: DEFAULT_OPTIONS.insertFinalNewline
   },
   {
     type: 'list',
     name: 'indentStyle',
     message: 'Indent style:',
-    default: defaultOptions.indentStyle,
+    default: DEFAULT_OPTIONS.indentStyle,
     choices: [
       'space',
       'tab'
@@ -89,7 +87,7 @@ exports.COMMON_QUESTIONS = [
     type: 'input',
     name: 'indentSize',
     message: 'Indent size:',
-    default: defaultOptions.indentSize,
+    default: DEFAULT_OPTIONS.indentSize,
     validate (value) {
       if (Number.isInteger(Number(value))) {
         return true
@@ -102,11 +100,11 @@ exports.COMMON_QUESTIONS = [
     type: 'confirm',
     name: 'trimTrailingWhitespace',
     message: 'Trim trailing whitespace:',
-    default: defaultOptions.trimTrailingWhitespace
+    default: DEFAULT_OPTIONS.trimTrailingWhitespace
   }
 ]
 
-exports.FINAL_QUESTION = {
+export const FINAL_QUESTION = {
   type: 'confirm',
   name: 'final',
   message: 'Do you want add different rules for another set of files?',

@@ -1,21 +1,18 @@
 #!/usr/bin/env node
 
-'use strict'
-
-const commandLineArgs = require('command-line-args')
-const inquirer = require('inquirer')
-const fs = require('fs')
-const constants = require('./constants.js');
-const formatMap = require('./formatMap.js');
-
-// ----------------------------------------
-
-const fileName = constants.FILE_NAME
-const rootQuestion = constants.ROOT_QUESTION
-const commonQuestions = constants.COMMON_QUESTIONS
-const finalQuestion = constants.FINAL_QUESTION
-const optionDefinitions = constants.OPTIONS_DEFINTIONS
-const defaultOptions = constants.DEFAULT_OPTIONS
+import commandLineArgs from 'command-line-args'
+import inquirer from 'inquirer'
+import fs from 'node:fs'
+import {
+  FILE_NAME,
+  ROOT_QUESTION,
+  COMMON_QUESTIONS,
+  FINAL_QUESTION,
+  OPTIONS_DEFINTIONS,
+  DEFAULT_OPTIONS,
+} from './constants.js'
+import formatMap from './formatMap.js'
+import { format } from './format.js'
 
 async function ask (questions) {
   const settings = []
@@ -30,29 +27,13 @@ async function ask (questions) {
 
         if (final) {
           console.log('\n')
-          return askQuestions([...commonQuestions, finalQuestion])
+          return askQuestions([...COMMON_QUESTIONS, FINAL_QUESTION])
         }
       })
 
   await askQuestions(questions)
 
   return settings
-}
-
-function format (settings, formatMap) {
-  const formatted = settings.map(data => {
-    const textLines = []
-
-    Object.keys(data).forEach(key => {
-      const line = formatMap[key](data[key])
-
-      textLines.push(line)
-    })
-
-    return textLines.join('')
-  })
-
-  return '# editorconfig.org\n' + formatted.join('')
 }
 
 function write (file, content) {
@@ -69,16 +50,16 @@ function write (file, content) {
   console.log(`\n${file} created. Enjoy :)`)
 }
 
-const options = commandLineArgs(optionDefinitions)
+const options = commandLineArgs(OPTIONS_DEFINTIONS)
 
 if (options.yes) {
-  write(fileName, format([defaultOptions], formatMap))
+  write(FILE_NAME, format([DEFAULT_OPTIONS], formatMap))
 
   process.exit(0)
 }
 
-ask([rootQuestion, ...commonQuestions, finalQuestion])
+ask([ROOT_QUESTION, ...COMMON_QUESTIONS, FINAL_QUESTION])
   .then((settings) => {
-    write(fileName, format(settings, formatMap))
+    write(FILE_NAME, format(settings, formatMap))
   })
   .catch(console.error)

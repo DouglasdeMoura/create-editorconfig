@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   root: content => `${content !== undefined ? `root = ${content ? 'true' : 'false'}\n` : ''}`,
   glob: content => '\n'+ `[${content}]\n`,
   charset: content => `charset = ${content}\n`,

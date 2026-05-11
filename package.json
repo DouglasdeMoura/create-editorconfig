@@ -2,6 +2,7 @@
   "name": "create-editorconfig",
   "version": "1.2.2",
   "description": "A generator for EditorConfig files.",
+  "type": "module",
   "bin": "src/index.js",
   "keywords": [
     "editorconfig",
