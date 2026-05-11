@@ -1,64 +1,62 @@
 #!/usr/bin/env node
 
-import inquirer from 'inquirer'
-import fs from 'node:fs'
+import inquirer from "inquirer";
+import fs from "node:fs";
 import {
   FILE_NAME,
   ROOT_QUESTION,
   COMMON_QUESTIONS,
   FINAL_QUESTION,
   DEFAULT_OPTIONS,
-} from './constants.js'
-import formatMap from './formatMap.js'
-import { format } from './format.js'
-import { parseArgs } from './parseArgs.js'
+} from "./constants.js";
+import formatMap from "./formatMap.js";
+import { format } from "./format.js";
+import { parseArgs } from "./parseArgs.js";
 
-async function ask (questions) {
-  const settings = []
+async function ask(questions) {
+  const settings = [];
 
   const askQuestions = (_questions) =>
-    inquirer
-      .prompt(_questions)
-      .then(_answers => {
-        const { final, ...answers } = _answers
+    inquirer.prompt(_questions).then((_answers) => {
+      const { final, ...answers } = _answers;
 
-        settings.push(answers)
+      settings.push(answers);
 
-        if (final) {
-          console.log('\n')
-          return askQuestions([...COMMON_QUESTIONS, FINAL_QUESTION])
-        }
-      })
+      if (final) {
+        console.log("\n");
+        return askQuestions([...COMMON_QUESTIONS, FINAL_QUESTION]);
+      }
+    });
 
-  await askQuestions(questions)
+  await askQuestions(questions);
 
-  return settings
+  return settings;
 }
 
-function write (file, content) {
+function write(file, content) {
   if (fs.existsSync(file)) {
-    console.error(`\nERROR: ${file} already exists.`)
-    return
+    console.error(`\nERROR: ${file} already exists.`);
+    return;
   }
 
   fs.writeFileSync(file, content, {
-    encoding: 'utf-8',
-    flag: 'w'
-  })
+    encoding: "utf-8",
+    flag: "w",
+  });
 
-  console.log(`\n${file} created. Enjoy :)`)
+  console.log(`\n${file} created. Enjoy :)`);
 }
 
-const options = parseArgs()
+const options = parseArgs();
 
 if (options.yes) {
-  write(FILE_NAME, format([DEFAULT_OPTIONS], formatMap))
+  write(FILE_NAME, format([DEFAULT_OPTIONS], formatMap));
 
-  process.exit(0)
+  process.exit(0);
 }
 
 ask([ROOT_QUESTION, ...COMMON_QUESTIONS, FINAL_QUESTION])
   .then((settings) => {
-    write(FILE_NAME, format(settings, formatMap))
+    write(FILE_NAME, format(settings, formatMap));
   })
-  .catch(console.error)
+  .catch(console.error);
