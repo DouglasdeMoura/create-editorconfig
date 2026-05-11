@@ -35,31 +35,38 @@ async function ask(questions) {
   return settings;
 }
 
-function write(file, content) {
-  if (fs.existsSync(file)) {
-    console.error(`\nERROR: ${file} already exists.`);
+function emit(content, { file, force }) {
+  if (file === "-") {
+    process.stdout.write(content);
     return;
   }
 
-  fs.writeFileSync(file, content, {
-    encoding: "utf-8",
-    flag: "w",
-  });
+  if (!force && fs.existsSync(file)) {
+    console.error(`\nERROR: ${file} already exists. Use --force to overwrite.`);
+    process.exitCode = 1;
+    return;
+  }
 
+  fs.writeFileSync(file, content, { encoding: "utf-8", flag: "w" });
   console.log(`\n${file} created. Enjoy :)`);
 }
 
+function resolveTarget(options) {
+  if (options.stdout) return "-";
+  if (options.output) return options.output;
+  return path.join(options.targetDir ?? ".", FILE_NAME);
+}
+
 const options = parseArgs();
-const targetFile = path.join(options.targetDir ?? ".", FILE_NAME);
+const target = resolveTarget(options);
 
 if (options.yes) {
-  write(targetFile, format([DEFAULT_OPTIONS], formatMap));
-
-  process.exit(0);
+  emit(format([DEFAULT_OPTIONS], formatMap), { file: target, force: options.force });
+  process.exit(process.exitCode ?? 0);
 }
 
 ask([ROOT_QUESTION, ...COMMON_QUESTIONS, FINAL_QUESTION])
   .then((settings) => {
-    write(targetFile, format(settings, formatMap));
+    emit(format(settings, formatMap), { file: target, force: options.force });
   })
   .catch(console.error);

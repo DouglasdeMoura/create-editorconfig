@@ -16,6 +16,13 @@ file](.editorconfig).
 Pass a directory as a positional argument to write the file somewhere other
 than the current directory: `npx create-editorconfig -y ./packages/foo`.
 
+### Flags
+
+- `-y, --yes` — generate the default `.editorconfig` without prompting.
+- `-f, --force` — overwrite an existing file instead of erroring out.
+- `-o, --output <path>` — write to a specific path instead of `<dir>/.editorconfig`.
+- `--stdout` — print the result to stdout instead of writing to disk.
+
 [![Create EditorConfig usage](usage.svg)](https://asciinema.org/a/CDUMGP3neHEMchCFUsIqgN1U4)
 
 ## License

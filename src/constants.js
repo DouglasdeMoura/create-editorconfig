@@ -17,6 +17,19 @@ export const OPTIONS_DEFINTIONS = {
     short: "y",
     default: false,
   },
+  force: {
+    type: "boolean",
+    short: "f",
+    default: false,
+  },
+  stdout: {
+    type: "boolean",
+    default: false,
+  },
+  output: {
+    type: "string",
+    short: "o",
+  },
 };
 
 export const FILE_NAME = ".editorconfig";
