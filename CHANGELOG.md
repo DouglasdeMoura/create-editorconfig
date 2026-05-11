@@ -1,14 +1,20 @@
 # Changelog
 
-## 2.2.0
+## 3.0.0
 
 ### Breaking changes
 
-- The `web` preset is renamed to `js` and gains explicit
+- The `web` preset is renamed to `js`. Anyone using `--preset web` from 2.1.0
+  must switch to `--preset js`.
+
+### Changes
+
+- The `js` preset gains explicit
   `[*.{js,jsx,ts,tsx,mjs,cjs,cts,mts,json,jsonc}]`, `[*.{yml,yaml}]`, and
-  `[Makefile]` sections. `--detect` now reports `js` for Node/TypeScript
-  projects (`package.json`, `tsconfig.json`, `deno.json`, `bun.lockb`,
-  `*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}`).
+  `[Makefile]` sections.
+- `--detect` recognizes more Node/TypeScript markers
+  (`deno.json`, `bun.lockb`, `*.js`, `*.mjs`, `*.cjs`, `*.mts`, `*.cts`) and
+  reports `js` instead of `web`.
 
 ## 2.1.0
 
