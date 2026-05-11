@@ -2,6 +2,7 @@
 
 import inquirer from "inquirer";
 import fs from "node:fs";
+import path from "node:path";
 import {
   FILE_NAME,
   ROOT_QUESTION,
@@ -48,15 +49,16 @@ function write(file, content) {
 }
 
 const options = parseArgs();
+const targetFile = path.join(options.targetDir ?? ".", FILE_NAME);
 
 if (options.yes) {
-  write(FILE_NAME, format([DEFAULT_OPTIONS], formatMap));
+  write(targetFile, format([DEFAULT_OPTIONS], formatMap));
 
   process.exit(0);
 }
 
 ask([ROOT_QUESTION, ...COMMON_QUESTIONS, FINAL_QUESTION])
   .then((settings) => {
-    write(FILE_NAME, format(settings, formatMap));
+    write(targetFile, format(settings, formatMap));
   })
   .catch(console.error);

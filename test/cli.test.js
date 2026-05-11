@@ -61,3 +61,17 @@ test("CLI -y refuses to overwrite existing .editorconfig", () => {
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("CLI -y writes to positional target directory", () => {
+  const cwd = mkdtempSync(path.join(tmpdir(), "cec-cli-cwd-"));
+  const outDir = mkdtempSync(path.join(tmpdir(), "cec-cli-out-"));
+  try {
+    const result = runIn(cwd, ["-y", outDir]);
+    assert.equal(result.status, 0, result.stderr);
+    const written = readFileSync(path.join(outDir, ".editorconfig"), "utf-8");
+    assert.equal(written, EXPECTED_DEFAULT);
+  } finally {
+    rmSync(cwd, { recursive: true, force: true });
+    rmSync(outDir, { recursive: true, force: true });
+  }
+});

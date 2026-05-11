@@ -13,6 +13,9 @@ the prompted questions according to your preferences. You must have `node` and
 Use `npx create-editorconfig -y` to skip the prompts and generate a [default `.editorconfig`
 file](.editorconfig).
 
+Pass a directory as a positional argument to write the file somewhere other
+than the current directory: `npx create-editorconfig -y ./packages/foo`.
+
 [![Create EditorConfig usage](usage.svg)](https://asciinema.org/a/CDUMGP3neHEMchCFUsIqgN1U4)
 
 ## License
