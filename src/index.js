@@ -11,7 +11,7 @@ import {
   DEFAULT_OPTIONS,
 } from "./constants.js";
 import formatMap from "./formatMap.js";
-import { format } from "./format.js";
+import { format, appendSections } from "./format.js";
 import { parseArgs } from "./parseArgs.js";
 import { PRESETS, PRESET_NAMES } from "./presets.js";
 import { prompt, closePrompt } from "./prompt.js";
@@ -36,14 +36,26 @@ async function ask(questions) {
   return settings;
 }
 
-function emit(content, { file, force }) {
+function emit(content, { file, force, merge }) {
   if (file === "-") {
     process.stdout.write(content);
     return;
   }
 
-  if (!force && fs.existsSync(file)) {
-    console.error(`\nERROR: ${file} already exists. Use --force to overwrite.`);
+  const exists = fs.existsSync(file);
+
+  if (merge && exists) {
+    const existing = fs.readFileSync(file, "utf-8");
+    const merged = appendSections(existing, content);
+    fs.writeFileSync(file, merged, { encoding: "utf-8", flag: "w" });
+    console.log(`\n${file} updated. Enjoy :)`);
+    return;
+  }
+
+  if (!force && exists) {
+    console.error(
+      `\nERROR: ${file} already exists. Use --force to overwrite or --merge to append.`,
+    );
     process.exitCode = 1;
     return;
   }
@@ -67,6 +79,18 @@ if (options.detect && options.preset === undefined) {
   options.preset = detected;
 }
 
+const mergeAppend = options.merge && target !== "-" && fs.existsSync(target);
+
+function settingsForAppend(settings) {
+  return settings.map(({ root, ...rest }) => rest).filter((s) => Object.keys(s).length > 0);
+}
+
+function render(settings) {
+  return mergeAppend
+    ? format(settingsForAppend(settings), formatMap, { header: false })
+    : format(settings, formatMap);
+}
+
 if (options.preset !== undefined) {
   const preset = PRESETS[options.preset];
   if (!preset) {
@@ -75,18 +99,22 @@ if (options.preset !== undefined) {
     );
     process.exit(1);
   }
-  emit(format(preset, formatMap), { file: target, force: options.force });
+  emit(render(preset), { file: target, force: options.force, merge: mergeAppend });
   process.exit(process.exitCode ?? 0);
 }
 
 if (options.yes) {
-  emit(format([DEFAULT_OPTIONS], formatMap), { file: target, force: options.force });
+  emit(render([DEFAULT_OPTIONS]), { file: target, force: options.force, merge: mergeAppend });
   process.exit(process.exitCode ?? 0);
 }
 
-ask([ROOT_QUESTION, ...COMMON_QUESTIONS, FINAL_QUESTION])
+const initialQuestions = mergeAppend
+  ? [...COMMON_QUESTIONS, FINAL_QUESTION]
+  : [ROOT_QUESTION, ...COMMON_QUESTIONS, FINAL_QUESTION];
+
+ask(initialQuestions)
   .then((settings) => {
-    emit(format(settings, formatMap), { file: target, force: options.force });
+    emit(render(settings), { file: target, force: options.force, merge: mergeAppend });
   })
   .catch(console.error)
   .finally(closePrompt);

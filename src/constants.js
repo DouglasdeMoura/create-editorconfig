@@ -38,6 +38,11 @@ export const OPTIONS_DEFINTIONS = {
     type: "boolean",
     default: false,
   },
+  merge: {
+    type: "boolean",
+    short: "m",
+    default: false,
+  },
 };
 
 export const FILE_NAME = ".editorconfig";

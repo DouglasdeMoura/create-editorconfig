@@ -7,6 +7,7 @@ const BASE = {
   force: false,
   stdout: false,
   detect: false,
+  merge: false,
   targetDir: undefined,
 };
 

@@ -2,7 +2,7 @@ import defaultFormatMap from "./formatMap.js";
 
 const HEADER = "# editorconfig.org\n";
 
-export function format(settings, map = defaultFormatMap) {
+export function format(settings, map = defaultFormatMap, { header = true } = {}) {
   let body = "";
 
   for (const data of settings) {
@@ -19,5 +19,12 @@ export function format(settings, map = defaultFormatMap) {
     }
   }
 
-  return HEADER + body;
+  return (header ? HEADER : "") + body;
+}
+
+export function appendSections(existing, newContent) {
+  if (existing === "") return newContent;
+  const trimmed = existing.replace(/\n+$/, "");
+  if (newContent === "") return trimmed + "\n";
+  return `${trimmed}\n\n${newContent}`;
 }

@@ -108,6 +108,38 @@ test("CLI --detect picks a preset from the target directory", () => {
   }
 });
 
+test("CLI --merge appends a preset's sections to an existing file", () => {
+  const dir = mkdtempSync(path.join(tmpdir(), "cec-cli-"));
+  try {
+    const target = path.join(dir, ".editorconfig");
+    const before = "# editorconfig.org\nroot = true\n\n[*]\nindent_size = 4\n";
+    writeFileSync(target, before);
+
+    const result = runIn(dir, ["--merge", "--preset", "web"]);
+    assert.equal(result.status, 0, result.stderr);
+
+    const after = readFileSync(target, "utf-8");
+    assert.ok(after.startsWith(before.trimEnd()), "existing content should be preserved");
+    assert.match(after, /\[\*\.md\]\n[^[]*trim_trailing_whitespace = false/);
+    assert.equal(after.indexOf("# editorconfig.org"), after.lastIndexOf("# editorconfig.org"));
+    assert.equal(after.indexOf("root = true"), after.lastIndexOf("root = true"));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("CLI --merge creates the file when it does not yet exist", () => {
+  const dir = mkdtempSync(path.join(tmpdir(), "cec-cli-"));
+  try {
+    const result = runIn(dir, ["--merge", "-y"]);
+    assert.equal(result.status, 0, result.stderr);
+    const written = readFileSync(path.join(dir, ".editorconfig"), "utf-8");
+    assert.equal(written, EXPECTED_DEFAULT);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("CLI --preset web writes a multi-section preset", () => {
   const dir = mkdtempSync(path.join(tmpdir(), "cec-cli-"));
   try {

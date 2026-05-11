@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { format } from "../src/format.js";
+import { format, appendSections } from "../src/format.js";
 import { DEFAULT_OPTIONS } from "../src/constants.js";
 
 const DEFAULT_EXPECTED = `# editorconfig.org
@@ -31,6 +31,30 @@ test("format() omits leading blank line when there's no preamble", () => {
 test("format() skips keys whose value is undefined or empty string", () => {
   const out = format([{ glob: "*", charset: "utf-8", tabWidth: undefined, indentSize: "" }]);
   assert.equal(out, "# editorconfig.org\n[*]\ncharset = utf-8\n");
+});
+
+test("format({header: false}) omits the editorconfig.org header", () => {
+  const out = format([{ glob: "*", charset: "utf-8" }], undefined, { header: false });
+  assert.equal(out, "[*]\ncharset = utf-8\n");
+});
+
+test("appendSections inserts a blank line between existing and new content", () => {
+  const existing = "# editorconfig.org\nroot = true\n\n[*]\nindent_size = 2\n";
+  const fresh = "[*.md]\ntrim_trailing_whitespace = false\n";
+  assert.equal(
+    appendSections(existing, fresh),
+    "# editorconfig.org\nroot = true\n\n[*]\nindent_size = 2\n\n[*.md]\ntrim_trailing_whitespace = false\n",
+  );
+});
+
+test("appendSections normalizes trailing newlines on the existing file", () => {
+  const existing = "[*]\nindent_size = 2\n\n\n\n";
+  const fresh = "[*.md]\n";
+  assert.equal(appendSections(existing, fresh), "[*]\nindent_size = 2\n\n[*.md]\n");
+});
+
+test("appendSections returns the new content when existing is empty", () => {
+  assert.equal(appendSections("", "[*]\n"), "[*]\n");
 });
 
 test("format() writes `unset` values verbatim", () => {
