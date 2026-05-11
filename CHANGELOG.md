@@ -1,5 +1,31 @@
 # Changelog
 
+## 2.1.0
+
+### New CLI flags
+
+- `<dir>` positional argument — write `.editorconfig` to that directory.
+- `-f, --force` — overwrite an existing file.
+- `-o, --output <path>` — write to a specific path.
+- `--stdout` — print to stdout instead of writing to disk.
+- `-p, --preset <name>` — generate from a named preset (`default`, `web`, `python`, `go`).
+- `--detect` — pick a preset by sniffing the target directory.
+- `-m, --merge` — append new sections to an existing `.editorconfig`.
+
+### New prompt properties
+
+- `tab_width` (positive integer, optional).
+- `max_line_length` (positive integer, `off`, or blank).
+- `unset` is now accepted for every property in per-glob override sections.
+
+### Fixes
+
+- `indent_size` now requires a positive integer or the literal `tab`.
+- Glob validation rejects unbalanced `[]`/`{}`.
+- `format()` no longer throws on unknown keys.
+- No leading blank line in the output when there is no `root` preamble.
+- README typo: `create-editor` → `create-editorconfig`.
+
 ## 2.0.0
 
 ### Breaking changes
