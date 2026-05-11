@@ -1,18 +1,22 @@
 import defaultFormatMap from "./formatMap.js";
 
+const HEADER = "# editorconfig.org\n";
+
 export function format(settings, map = defaultFormatMap) {
-  const formatted = settings.map((data) => {
-    const textLines = [];
+  let body = "";
 
-    Object.keys(data).forEach((key) => {
+  for (const data of settings) {
+    for (const key of Object.keys(data)) {
       const formatter = map[key];
-      if (typeof formatter !== "function") return;
+      if (typeof formatter !== "function") continue;
 
-      textLines.push(formatter(data[key]));
-    });
+      const line = formatter(data[key]);
+      if (line === "") continue;
 
-    return textLines.join("");
-  });
+      if (key === "glob" && body !== "") body += "\n";
+      body += line;
+    }
+  }
 
-  return "# editorconfig.org\n" + formatted.join("");
+  return HEADER + body;
 }

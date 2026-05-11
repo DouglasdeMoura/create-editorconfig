@@ -23,9 +23,14 @@ test("format([]) returns only the header", () => {
   assert.equal(format([]), "# editorconfig.org\n");
 });
 
+test("format() omits leading blank line when there's no preamble", () => {
+  const out = format([{ glob: "*", charset: "utf-8" }]);
+  assert.equal(out, "# editorconfig.org\n[*]\ncharset = utf-8\n");
+});
+
 test("format() skips keys without a formatter", () => {
   const out = format([{ glob: "*", charset: "utf-8", unknownKey: "x" }]);
-  assert.equal(out, "# editorconfig.org\n\n[*]\ncharset = utf-8\n");
+  assert.equal(out, "# editorconfig.org\n[*]\ncharset = utf-8\n");
 });
 
 test("format() concatenates multiple sections", () => {

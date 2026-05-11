@@ -1,6 +1,6 @@
 export default {
   root: (content) => `${content !== undefined ? `root = ${content ? "true" : "false"}\n` : ""}`,
-  glob: (content) => "\n" + `[${content}]\n`,
+  glob: (content) => `[${content}]\n`,
   charset: (content) => `charset = ${content}\n`,
   endOfLine: (content) => `end_of_line = ${content}\n`,
   insertFinalNewline: (content) => `insert_final_newline = ${content}\n`,

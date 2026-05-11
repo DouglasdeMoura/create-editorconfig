@@ -14,9 +14,9 @@ test('root: undefined → ""', () => {
   assert.equal(formatMap.root(undefined), "");
 });
 
-test("glob: produces leading blank line and bracketed pattern", () => {
-  assert.equal(formatMap.glob("*"), "\n[*]\n");
-  assert.equal(formatMap.glob("*.{js,ts}"), "\n[*.{js,ts}]\n");
+test("glob: bracketed pattern", () => {
+  assert.equal(formatMap.glob("*"), "[*]\n");
+  assert.equal(formatMap.glob("*.{js,ts}"), "[*.{js,ts}]\n");
 });
 
 test("charset", () => {
