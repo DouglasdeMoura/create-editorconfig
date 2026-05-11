@@ -33,6 +33,23 @@ test("format() skips keys whose value is undefined or empty string", () => {
   assert.equal(out, "# editorconfig.org\n[*]\ncharset = utf-8\n");
 });
 
+test("format() writes `unset` values verbatim", () => {
+  const out = format([
+    { root: true, glob: "*", indentStyle: "space" },
+    { glob: "Makefile", indentStyle: "unset", indentSize: "unset" },
+  ]);
+  assert.equal(
+    out,
+    "# editorconfig.org\n" +
+      "root = true\n" +
+      "\n[*]\n" +
+      "indent_style = space\n" +
+      "\n[Makefile]\n" +
+      "indent_style = unset\n" +
+      "indent_size = unset\n",
+  );
+});
+
 test("format() skips keys without a formatter", () => {
   const out = format([{ glob: "*", charset: "utf-8", unknownKey: "x" }]);
   assert.equal(out, "# editorconfig.org\n[*]\ncharset = utf-8\n");

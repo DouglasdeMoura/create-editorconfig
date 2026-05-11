@@ -148,3 +148,56 @@ export const FINAL_QUESTION = {
   message: "Do you want add different rules for another set of files?",
   default: false,
 };
+
+const UNSET = "unset";
+
+function withUnsetChoice(q) {
+  return {
+    ...q,
+    choices: [...q.choices, UNSET],
+    default: UNSET,
+  };
+}
+
+function asUnsetableInput(q) {
+  return {
+    ...q,
+    message: q.message.replace(/:$/, `, or \`${UNSET}\`:`),
+    default: UNSET,
+    validate(value) {
+      if (typeof value === "string" && value.trim().toLowerCase() === UNSET) {
+        return true;
+      }
+      return q.validate ? q.validate(value) : true;
+    },
+    filter(value) {
+      if (typeof value === "string" && value.trim().toLowerCase() === UNSET) {
+        return UNSET;
+      }
+      return q.filter ? q.filter(value) : value;
+    },
+  };
+}
+
+function confirmAsUnsetableList(q) {
+  return {
+    type: "list",
+    name: q.name,
+    message: q.message,
+    default: UNSET,
+    choices: ["true", "false", UNSET],
+    filter(value) {
+      if (value === "true") return true;
+      if (value === "false") return false;
+      return value;
+    },
+  };
+}
+
+export const OVERRIDE_QUESTIONS = COMMON_QUESTIONS.map((q) => {
+  if (q.name === "glob") return q;
+  if (q.type === "list") return withUnsetChoice(q);
+  if (q.type === "confirm") return confirmAsUnsetableList(q);
+  if (q.type === "input") return asUnsetableInput(q);
+  return q;
+});

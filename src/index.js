@@ -7,6 +7,7 @@ import {
   FILE_NAME,
   ROOT_QUESTION,
   COMMON_QUESTIONS,
+  OVERRIDE_QUESTIONS,
   FINAL_QUESTION,
   DEFAULT_OPTIONS,
 } from "./constants.js";
@@ -25,7 +26,7 @@ async function ask(questions) {
 
       if (final) {
         console.log("\n");
-        return askQuestions([...COMMON_QUESTIONS, FINAL_QUESTION]);
+        return askQuestions([...OVERRIDE_QUESTIONS, FINAL_QUESTION]);
       }
     });
 
