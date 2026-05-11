@@ -11,9 +11,11 @@
   "author": "Douglas Moura <douglas.ademoura@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/DouglasdeMoura/create-editorconfig"
+    "url": "git+https://github.com/DouglasdeMoura/create-editorconfig.git"
   },
-  "bin": "src/index.js",
+  "bin": {
+    "create-editorconfig": "src/index.js"
+  },
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
