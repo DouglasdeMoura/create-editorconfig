@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import inquirer from "inquirer";
 import fs from "node:fs";
 import path from "node:path";
 import {
@@ -15,24 +14,24 @@ import formatMap from "./formatMap.js";
 import { format } from "./format.js";
 import { parseArgs } from "./parseArgs.js";
 import { PRESETS, PRESET_NAMES } from "./presets.js";
+import { prompt, closePrompt } from "./prompt.js";
 import { detectPreset } from "./sniff.js";
 
 async function ask(questions) {
   const settings = [];
+  let next = questions;
 
-  const askQuestions = (_questions) =>
-    inquirer.prompt(_questions).then((_answers) => {
-      const { final, ...answers } = _answers;
+  while (next) {
+    const { final, ...answers } = await prompt(next);
+    settings.push(answers);
 
-      settings.push(answers);
-
-      if (final) {
-        console.log("\n");
-        return askQuestions([...OVERRIDE_QUESTIONS, FINAL_QUESTION]);
-      }
-    });
-
-  await askQuestions(questions);
+    if (final) {
+      console.log("");
+      next = [...OVERRIDE_QUESTIONS, FINAL_QUESTION];
+    } else {
+      next = null;
+    }
+  }
 
   return settings;
 }
@@ -89,4 +88,5 @@ ask([ROOT_QUESTION, ...COMMON_QUESTIONS, FINAL_QUESTION])
   .then((settings) => {
     emit(format(settings, formatMap), { file: target, force: options.force });
   })
-  .catch(console.error);
+  .catch(console.error)
+  .finally(closePrompt);
