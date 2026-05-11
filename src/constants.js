@@ -72,14 +72,26 @@ export const COMMON_QUESTIONS = [
   {
     type: "input",
     name: "indentSize",
-    message: "Indent size:",
+    message: "Indent size (positive integer or `tab`):",
     default: DEFAULT_OPTIONS.indentSize,
     validate(value) {
-      if (Number.isInteger(Number(value))) {
+      if (typeof value === "string" && value.trim().toLowerCase() === "tab") {
         return true;
       }
 
-      return "Please enter a valid integer.";
+      const n = Number(value);
+      if (Number.isInteger(n) && n > 0) {
+        return true;
+      }
+
+      return "Please enter a positive integer or `tab`.";
+    },
+    filter(value) {
+      if (typeof value === "string" && value.trim().toLowerCase() === "tab") {
+        return "tab";
+      }
+      const n = Number(value);
+      return Number.isInteger(n) ? n : value;
     },
   },
   {
