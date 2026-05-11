@@ -13,7 +13,8 @@
     "editorconfig.org"
   ],
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "node --test"
   },
   "author": "Douglas Moura <douglas.ademoura@gmail.com>",
   "repository": {
