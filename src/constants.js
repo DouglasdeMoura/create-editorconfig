@@ -117,6 +117,29 @@ export const COMMON_QUESTIONS = [
     message: "Trim trailing whitespace:",
     default: DEFAULT_OPTIONS.trimTrailingWhitespace,
   },
+  {
+    type: "input",
+    name: "maxLineLength",
+    message: "Max line length (positive integer, `off`, or leave blank):",
+    default: "",
+    validate(value) {
+      if (value === "" || value === undefined) return true;
+      if (typeof value === "string" && value.trim().toLowerCase() === "off") {
+        return true;
+      }
+      const n = Number(value);
+      if (Number.isInteger(n) && n > 0) return true;
+      return "Please enter a positive integer, `off`, or leave blank.";
+    },
+    filter(value) {
+      if (value === "" || value === undefined) return undefined;
+      if (typeof value === "string" && value.trim().toLowerCase() === "off") {
+        return "off";
+      }
+      const n = Number(value);
+      return Number.isInteger(n) ? n : value;
+    },
+  },
 ];
 
 export const FINAL_QUESTION = {

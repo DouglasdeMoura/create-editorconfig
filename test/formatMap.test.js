@@ -48,3 +48,8 @@ test("tabWidth", () => {
 test("trimTrailingWhitespace", () => {
   assert.equal(formatMap.trimTrailingWhitespace(true), "trim_trailing_whitespace = true\n");
 });
+
+test("maxLineLength", () => {
+  assert.equal(formatMap.maxLineLength(80), "max_line_length = 80\n");
+  assert.equal(formatMap.maxLineLength("off"), "max_line_length = off\n");
+});

@@ -8,4 +8,5 @@ export default {
   indentSize: (content) => `indent_size = ${content}\n`,
   tabWidth: (content) => `tab_width = ${content}\n`,
   trimTrailingWhitespace: (content) => `trim_trailing_whitespace = ${content}\n`,
+  maxLineLength: (content) => `max_line_length = ${content}\n`,
 };
